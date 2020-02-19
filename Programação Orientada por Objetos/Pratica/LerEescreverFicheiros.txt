@@ -1,0 +1,222 @@
+Ler para um StringBuilder utilizando Scanner:
+
+        StringBuilder s = new StringBuilder();
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                s.append(scanner.nextLine()).append(EOL);
+            }
+        } catch (FileNotFoundException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("File not found!");
+            alert.setContentText("Error opening file " + file.getAbsolutePath());
+            alert.showAndWait();
+            Platform.exit(); // System.exit(1);
+        } finally {
+            scanner.close();
+        }
+        return s.toString();
+-----------------------------------------
+
+Exemplos de escrita em Escrita de ficheiros em Java (um artigo que resume as formas principais de o fazer)
+
+-----------------------------------------
+
+O exemplo seguinte foi retirado de  https://examples.javacodegeeks.com/core-java/io/printwriter/java-printwriter-example/
+
+Ilustra o PrintWriter e o BuffereWriter e FileWriter. 
+
+        PrintWriter pw = new PrintWriter(System.out, true);
+        pw.println("Java Code Geeks");
+        int i = 5;
+        double k = 10.0;
+        pw.printf("i = %d and k = %f",i,k);
+        // flush the instance pw
+        pw.flush();
+         
+        System.out.println("\n---------------------------------------");
+         
+        // write sth in a file (deletes the lines if exist)
+        PrintWriter pwFile = null;
+        Date date = new Date();
+        try{
+            pwFile = new PrintWriter(filename);
+            i++;
+            // write a builtIn object
+            pwFile.println(date);
+            pwFile.write("Write something in a line. i = "+i);
+            System.out.println("Write to the file successfully");
+        }catch(FileNotFoundException e) {
+            e.printStackTrace();
+        }catch(SecurityException e) {
+            e.printStackTrace();
+        }finally {
+            // always close the output stream
+            if(pwFile != null){
+                pwFile.close();
+            }
+        }
+         
+        PrintWriter pwFile1 = null;
+        Object obj = System.getProperty("line.separator")+"A new object";
+        // write in a file in a newline (no deletion of previous writing)
+        try {
+            FileWriter fl = new FileWriter(filename, true);
+            BufferedWriter br = new BufferedWriter(fl);
+            pwFile1 = new PrintWriter(br) ;       
+             
+            pwFile1.println(obj);
+            // write the string beginning from the 3rd char until the 8th
+            pwFile1.write("!!!JCG Test!!!",3 ,8);
+            System.out.println("Add new lines to the file successfully");
+        }catch(FileNotFoundException e) {
+            e.printStackTrace();
+        }catch(SecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            // for FileWriter
+            e.printStackTrace();
+        }finally {
+           // no matter what happen, close the output stream
+            if(pwFile1 != null){
+                pwFile1.close();
+           }
+        }
+    }
+
+
+
+
+/** Copy one file to another */
+   public static void copyFiles(String inFilename, String outFilename)
+   {
+      BufferedReader inFile = null;
+      BufferedWriter outFile = null;
+      try
+      {
+         inFile = new BufferedReader(new FileReader(inFilename));
+         outFile = new BufferedWriter(new FileWriter(outFilename));
+         int c = -1;
+         while ((c = inFile.read()) != -1)
+         {
+            outFile.write(c);
+         }
+      }
+      catch (FileNotFoundException e) // from FileReader constructor
+      {
+         abort(inFilename + " not found!");
+      }
+      catch (IOException e) // from readLine
+      {
+         abort("Error reading file: " + e);
+      }
+      // Always close the streams, even if exceptions were thrown
+      finally
+      {
+         if (inFile != null)
+         {
+            try
+            {
+               inFile.close();
+            }
+            catch (IOException e)
+            {
+               abort("Input file close failed");
+            }
+         }
+         if (outFile != null)
+         {
+            try
+            {
+               outFile.close();
+            }
+            catch (IOException e)
+            {
+               abort("Output file close failed");
+            }
+         }
+      }
+   }
+
+   /** Copy alternate lines from one file to another */
+   public static void alternate(String inFilename, String outFilename)
+   {
+      BufferedReader inFile = null;
+      BufferedWriter outFile = null;
+      try
+      {
+         inFile = new BufferedReader(new FileReader(inFilename));
+         outFile = new BufferedWriter(new FileWriter(outFilename));
+
+         while (inFile.readLine() != null)
+         {
+            String s = inFile.readLine();
+            if (s != null)
+            {
+               outFile.write(s + EOL);
+            }
+         }
+      }
+      catch (FileNotFoundException e) // from FileReader constructor
+      {
+         abort(inFilename + " not found!");
+      }
+      catch (IOException e) // from readLine
+      {
+         abort("Error reading file: " + e);
+      }
+      // Always close the streams, even if exceptions were thrown
+      finally
+      {
+         if (inFile != null)
+         {
+            try
+            {
+               inFile.close();
+            }
+            catch (IOException e)
+            {
+               abort("Input file close failed");
+            }
+         }
+         if (outFile != null)
+         {
+            try
+            {
+               outFile.close();
+            }
+            catch (IOException e)
+            {
+               abort("Output file close failed");
+            }
+         }
+      }
+   }
+
+
+
+
+
+
+Ler todas as linhas de somefile.txt para uma lista de Strings (uma linha em cada posição da lista) e escrever
+
+List<String> lines = Files.readAllLines(Paths.get("somefile.txt")); // Lê para a lista
+lines.add("one more line"); // adiciona um elemento à lista
+Files.write(Paths.get("newfile.txt"), lines); // escreve a lista para ficheiro
+----------------------------------------------------------------------------------
+
+
+//Get the file reference
+Path path = Paths.get("c:/output.txt");
+ 
+//Use try-with-resource to get auto-closeable writer instance
+try (BufferedWriter writer = Files.newBufferedWriter(path))
+{
+    writer.write("Hello World !!"); // escreve para o ficheiro "C:/output.txt"
+}
+
+String content = "Hello World !!";
+Files.write(Paths.get("c:/output.txt"), content.getBytes()); // escreve para o ficheiro "C:/output.txt"
+----------------------------------------------------------------------------------

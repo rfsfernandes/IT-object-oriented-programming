@@ -1,0 +1,55 @@
+package pt.ipbeja.po2.fifteen.model;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class FifteenModelTest {
+
+    @Test
+    void testTryToMoveIllegal() {
+        FifteenModel model = new FifteenModel();
+
+        int[][] board = new int[][] {
+                { 1,  2,  3,  4},
+                { 5,  6,  7,  8},
+                { 9, 10, 11, 12},
+                {13, 14,  0, 15},
+        };
+        model.setBoard(board);
+
+        model.selectCell(2, 3);
+        int[][] newBoard = model.getBoard();
+        assertEquals(board, newBoard);
+    }
+
+    @Test
+    void testTryToMoveLegal() {
+        FifteenModel model = new FifteenModel();
+
+        int[][] board = new int[][] {
+                { 1,  2,  3,  4},
+                { 5,  6,  7,  8},
+                { 9, 10, 11, 12},
+                {13, 14,  0, 15},
+        };
+        model.setBoard(board);
+
+        model.selectCell(3, 1);
+        int[][] newBoard = model.getBoard();
+
+        int[][] expectedBoard = new int[][] {
+                { 1,  2,  3,  4},
+                { 5,  6,  7,  8},
+                { 9, 10, 11, 12},
+                {13,  0, 14, 15},
+        };
+        assertArrayEquals(expectedBoard, newBoard);
+    }
+
+    @Test
+    void testWinPosition() {
+         // TO DO
+    }
+}
