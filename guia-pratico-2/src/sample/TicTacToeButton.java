@@ -2,16 +2,11 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.Optional;
 
 import static sample.TicTacToeBoard.*;
 
@@ -39,12 +34,13 @@ public class TicTacToeButton extends Button  {
          TicTacToeButton button = (TicTacToeButton) event.getSource();
          ImageView view = new ImageView();
 
-         if(clicked % 2 == 0){
+         if(isClicked){
             view = new ImageView(new Image("/resources/player1.png"));
          }else{
             view = new ImageView(new Image("/resources/player2.png"));
          }
 
+         isClicked = !isClicked;
          clicked++;
          view.autosize();
          button.setGraphic(view);
