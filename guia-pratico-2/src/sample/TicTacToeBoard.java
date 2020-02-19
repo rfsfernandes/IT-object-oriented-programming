@@ -35,7 +35,7 @@ public class TicTacToeBoard extends GridPane {
    public void showAlert() {
       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
       alert.setTitle("GAME IS OVER!");
-      alert.setContentText("Want to play again?");
+      alert.setContentText("Do you want to play again?");
       alert.setResult(ButtonType.OK);
       Optional<ButtonType> result = alert.showAndWait();
 

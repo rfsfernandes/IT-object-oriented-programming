@@ -5,5 +5,4 @@ import javafx.event.EventHandler;
 
 public interface ButtonHandler{
     void gameEnded();
-
 }
