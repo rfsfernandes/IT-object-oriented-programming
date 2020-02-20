@@ -11,12 +11,12 @@ import pt.ipbeja.po2.tictactoe.model.TicTacToeGame;
  * Created by DiogoPM on 14/03/2018.
  */
 
-public class TicTacToeBoard extends GridPane {
+public class TicTacToeGUI extends GridPane {
 
    public static final int SIZE = 3;
    private TicTacToeGame gameModel;
 
-   public TicTacToeBoard() {
+   public TicTacToeGUI() {
       gameModel = new TicTacToeGame(this);
       this.createBoard();
    }

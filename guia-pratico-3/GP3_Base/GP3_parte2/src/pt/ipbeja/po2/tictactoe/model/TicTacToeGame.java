@@ -1,24 +1,22 @@
 package pt.ipbeja.po2.tictactoe.model;
 
-import pt.ipbeja.po2.tictactoe.gui.TicTacToeBoard;
+import pt.ipbeja.po2.tictactoe.gui.TicTacToeGUI;
 import pt.ipbeja.po2.tictactoe.gui.TicTacToeButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import static pt.ipbeja.po2.tictactoe.gui.TicTacToeBoard.SIZE;
+import static pt.ipbeja.po2.tictactoe.gui.TicTacToeGUI.SIZE;
 
 public class TicTacToeGame {
 
 	 public Place[][] boardData = new Place[SIZE][SIZE];
 
-	 TicTacToeBoard ticTacToeBoard;
+	 TicTacToeGUI ticTacToeGUI;
 
 	 ArrayList<Place> moves = new ArrayList<>();
 
-	 public TicTacToeGame(TicTacToeBoard ticTacToeBoard) {
-			this.ticTacToeBoard = ticTacToeBoard;
+	 public TicTacToeGame(TicTacToeGUI ticTacToeGUI) {
+			this.ticTacToeGUI = ticTacToeGUI;
 	 }
 
 	 public enum Place {
@@ -52,13 +50,13 @@ public class TicTacToeGame {
          case RUNNING:
             break;
          case DRAW:
-            ticTacToeBoard.draw();
+            ticTacToeGUI.draw();
             break;
          case PLAYER1_WIN:
-            ticTacToeBoard.playerWins(1);
+            ticTacToeGUI.playerWins(1);
             break;
          case PLAYER2_WIN:
-            ticTacToeBoard.playerWins(2);
+            ticTacToeGUI.playerWins(2);
             break;
       }
 
