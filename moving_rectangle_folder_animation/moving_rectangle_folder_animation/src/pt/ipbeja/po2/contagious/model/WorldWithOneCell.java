@@ -10,7 +10,6 @@ public class WorldWithOneCell {
     private final int nLines;
     private final int nCols;
 
-
     public WorldWithOneCell(View view, int nLines, int nCols) {
         this.view = view;
         this.nLines = nLines;
