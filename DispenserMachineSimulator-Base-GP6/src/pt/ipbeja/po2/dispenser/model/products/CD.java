@@ -14,13 +14,6 @@ public class CD extends Disc{
     }
 
     @Override
-    public int computeTax() {
-        double taxes = ((int)(getDuration() / 3600)) * 0.1 ;
-
-        return (int) (getPrice() * taxes);
-    }
-
-    @Override
     public int priceWithTax() {
         return getPrice() + computeTax();
     }

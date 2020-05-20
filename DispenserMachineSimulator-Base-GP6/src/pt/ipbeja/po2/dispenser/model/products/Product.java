@@ -7,7 +7,7 @@ import java.util.Objects;
  * @version 02/05/2019
  */
 
-public abstract class Product {
+public abstract class Product implements Comparable<Product> {
 
     private String name;
     private int price;
@@ -42,6 +42,23 @@ public abstract class Product {
     @Override
     public int hashCode() {
         return Objects.hash(name, price);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        int cn = this.getName().compareTo(o.getName());
+        if(cn == 0){
+            return Integer.compare(this.getPrice(), o.getPrice());
+        }
+        return cn;
     }
 }
 

@@ -36,6 +36,14 @@ public abstract class Disc extends ProductWithAuthors {
     }
 
     @Override
+    public int computeTax() {
+        double taxes = ((int)(getDuration() / 3600)) * 0.1 ;
+
+        return (int) (getPrice() * taxes);
+    }
+
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Disc)) return false;

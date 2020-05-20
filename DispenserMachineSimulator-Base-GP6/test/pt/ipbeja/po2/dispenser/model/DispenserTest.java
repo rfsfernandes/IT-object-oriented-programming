@@ -2,10 +2,7 @@ package pt.ipbeja.po2.dispenser.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pt.ipbeja.po2.dispenser.model.products.Camera;
-import pt.ipbeja.po2.dispenser.model.products.Game;
-import pt.ipbeja.po2.dispenser.model.products.Product;
-import pt.ipbeja.po2.dispenser.model.products.Video;
+import pt.ipbeja.po2.dispenser.model.products.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,17 +15,26 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class DispenserTest {
-
+    private Product p1, p2, p3;
+    private List<Author> authors;
     private Dispenser dispenser;
 
     @BeforeEach
-    void setup() {
-        Register register = new Register("XYZ", "Bolhas company", 2006);
-        this.dispenser = new Dispenser(register);
-        this.dispenser.addProduct(new Game("Bolachas", 40, "PS4"));
-        this.dispenser.addProduct(new Game("Bolo", 100, "PS4"));
-        this.dispenser.addProduct(new Game("Pastilhas", 50, "PS4"));
+    public void setUp(){
+        this.dispenser = new Dispenser(new Register("Aquele dispenser do dragão", "Snax", 2020));
+        this.authors = Arrays.asList(
+                new Author("Rodrigo", "Portugal"),
+                new Author("João", "Portugal"),
+                new Author("António", "Portugal"));
+        this.p1 = new Book("Livro do dragão", 20, "Editana", this.authors);
+        this.p2 = new CD("Yo yo yo", 15, 3630, this.authors);
+        this.p3 = new Camera("Canon 70D", 700);
+
+        this.dispenser.addProduct(this.p1);
+        this.dispenser.addProduct(this.p2);
+        this.dispenser.addProduct(this.p3);
     }
+
 
     @Test
     void testInsertCoin() {
@@ -80,18 +86,20 @@ class DispenserTest {
         int salesBefore = dispenser.getSalesMoney();
 
         dispenser.insertCoin(50);
-        dispenser.selectProduct("Bolachas");
+        dispenser.selectProduct("Yo yo yo");
         int change = dispenser.buyProduct();
 
         // comparar antes com depois de comprar
-        assertEquals(salesBefore + 40, dispenser.getSalesMoney());
+        assertEquals(salesBefore + 15, dispenser.getSalesMoney());
         assertEquals(productsBefore - 1, dispenser.getProductStock());
-        assertEquals(10, change);
+        assertEquals(35, change);
 
-        dispenser.insertCoin(50);
-        dispenser.selectProduct(1); // pastilhas, 50
+        dispenser.insertCoin(10);
+        dispenser.insertCoin(10);
+        dispenser.insertCoin(10);
+        dispenser.selectProduct(0); // camera, 700
         change = dispenser.buyProduct();
-        assertEquals(0, change);
+        assertEquals(10, change);
 
     }
 
@@ -121,7 +129,7 @@ class DispenserTest {
     @Test
     void testBuyProductInsufficientMoney() {
         //Dispenser dispenser = new Dispenser(40);
-        dispenser.insertCoin(20);
+        dispenser.insertCoin(10);
         dispenser.insertCoin(5);
 
         // quantidades antes de tentar comprar
@@ -133,8 +141,8 @@ class DispenserTest {
         dispenser.selectProduct(0);
         int missing = dispenser.buyProduct();
 
-        // verificamos que de facto faltam 15 para comprar o produto
-        assertEquals(-15, missing);
+        // verificamos que de facto faltam 5 para comprar o produto
+        assertEquals(-5, missing);
 
         // e que não foi vendido qualquer produto
         assertEquals(products, dispenser.getProductStock());
@@ -144,22 +152,22 @@ class DispenserTest {
     @Test
     void testRegisterInformation() {
 
-        assertEquals("XYZ", dispenser.getModel());
-        assertEquals("Bolhas company", dispenser.getCompany());
-        assertEquals(2006, dispenser.getYear());
+        assertEquals("Aquele dispenser do dragão", dispenser.getModel());
+        assertEquals("Snax", dispenser.getCompany());
+        assertEquals(2020, dispenser.getYear());
 
     }
 
     @Test
     void getMostExpensiveTest() {
-        Product expected = new Camera("Bolo", 100);
+        Product expected = new Camera("Canon 70D", 700);
         Product expensive = dispenser.getMostExpensiveProduct();
         assertEquals(expected, expensive);
     }
 
     @Test
     void getCheapestTest() {
-        Product expected = new Camera("Bolachas", 40);
+        Product expected = new CD("Yo yo yo", 15, 3630, this.authors);
         Product cheapest = dispenser.getCheapestProduct();
         assertEquals(expected, cheapest);
     }
@@ -167,7 +175,7 @@ class DispenserTest {
     @Test
     void getAveragePriceTest() {
         double avg = dispenser.getAveragePrice();
-        double expected = 190 / 3.0;
+        double expected = 735 / 3.0;
         assertEquals(avg, expected);
 
     }
@@ -175,20 +183,27 @@ class DispenserTest {
     @Test
     void getProductNamesTest() {
         String names = dispenser.getProductNames();
-        assertEquals("Bolachas\nBolo\nPastilhas\n", names);
+
+        assertEquals("Livro do dragão\nYo yo yo\nCanon 70D\n", names);
     }
 
     @Test
     void getProductsCheaperThanTest() {
-        List<Product> expected = Arrays.asList(new Game("Bolachas", 40, "PS4"), new Game("Pastilhas", 50, "PS4"));
-        List<Product> cheaper = dispenser.getProductsCheaperThan(51);
+
+        List<Product> expected = Arrays.asList(new Book("Livro do dragão", 20, "Editana", this.authors), new CD("Yo yo yo", 15, 3630, this.authors));
+        List<Product> cheaper = dispenser.getProductsCheaperThan(21);
         assertEquals(expected.toString(), cheaper.toString());
 
     }
 
-//    @Test
-//    void g
 
+    @Test
+    void testingTax(){
+        for (Product product : this.dispenser.getProducts()){
+
+            assertEquals(product.priceWithTax(),product.getPrice() + product.computeTax() );
+        }
+    }
 
 }
 
